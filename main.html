@@ -10,9 +10,76 @@
   <body>
     <main>
       <!-- solution start -->
-      
+       <h3 id="h">Please click on the identical tiles to verify that you are not a robot.</h3>
+      <div class="flex" id="image-container"></div>
+      <div class="flex">
+        <button id="reset" style="display:none;">Reset</button>
+        <button id="verify" style="display:none;">Verify</button>
+      </div>
+      <p id="para"></p>
       <!-- solution end -->
     </main>
-    <script src="./script.js"></script>
+    <script src="./script.js">
+
+		const images = ["img1", "img2", "img3", "img4", "img5"];
+      const container = document.getElementById("image-container");
+      const resetBtn = document.getElementById("reset");
+      const verifyBtn = document.getElementById("verify");
+      const para = document.getElementById("para");
+
+      let selected = [];
+      let tiles = [];
+
+      function setup() {
+        para.innerText = "";
+        selected = [];
+        tiles = [];
+        resetBtn.style.display = "none";
+        verifyBtn.style.display = "none";
+        container.innerHTML = "";
+
+        const duplicate = images[Math.floor(Math.random() * images.length)];
+        const tileSet = [...images, duplicate];
+        tileSet.sort(() => 0.5 - Math.random());
+
+        tileSet.forEach((imgClass, index) => {
+          const img = document.createElement("img");
+          img.classList.add(imgClass);
+          img.dataset.class = imgClass;
+          img.addEventListener("click", () => handleImageClick(img));
+          tiles.push(img);
+          container.appendChild(img);
+        });
+      }
+
+      function handleImageClick(img) {
+        if (selected.includes(img)) return;
+
+        if (selected.length === 2) return;
+
+        img.classList.add("selected");
+        selected.push(img);
+
+        resetBtn.style.display = "inline";
+
+        if (selected.length === 2) {
+          verifyBtn.style.display = "inline";
+        }
+      }
+
+      resetBtn.onclick = () => setup();
+
+      verifyBtn.onclick = () => {
+        verifyBtn.style.display = "none";
+        const [first, second] = selected;
+        if (first.dataset.class === second.dataset.class) {
+          para.innerText = "You are a human. Congratulations!";
+        } else {
+          para.innerText = "We can't verify you as a human. You selected the non-identical tiles.";
+        }
+      };
+
+      setup();
+	</script>
   </body>
 </html>
