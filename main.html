@@ -8,98 +8,15 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-   <main>
-  <h3 id="h">Please click on the identical tiles to verify that you are not a robot.</h3>
-  <div id="image-container" class="flex"></div>
-  <div class="flex">
-    <button id="reset" style="display: none;">Reset</button>
-    <button id="verify" style="display: none;">Verify</button>
-  </div>
-  <p id="para"></p>
-</main>
-    <script src="./script.js">
-const images = ["img1", "img2", "img3", "img4", "img5"];
-let imageElements = [];
-let selected = [];
-
-const container = document.getElementById("image-container");
-const resetBtn = document.getElementById("reset");
-const verifyBtn = document.getElementById("verify");
-const message = document.getElementById("para");
-const heading = document.getElementById("h");
-
-// Generate 5 unique + 1 duplicate
-function generateImages() {
-  const selectedImages = [...images];
-  const duplicateIndex = Math.floor(Math.random() * 5);
-  const duplicateClass = selectedImages[duplicateIndex];
-
-  const allImages = [...selectedImages, duplicateClass];
-
-  // Shuffle
-  for (let i = allImages.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [allImages[i], allImages[j]] = [allImages[j], allImages[i]];
-  }
-
-  container.innerHTML = "";
-  imageElements = [];
-
-  allImages.forEach((cls, idx) => {
-    const img = document.createElement("img");
-    img.className = cls;
-    img.dataset.class = cls;
-    img.style.cursor = "pointer";
-    img.addEventListener("click", () => handleImageClick(img));
-    container.appendChild(img);
-    imageElements.push(img);
-  });
-}
-
-// Handle image click
-function handleImageClick(img) {
-  if (selected.includes(img)) {
-    return;
-  }
-
-  if (selected.length === 2) return;
-
-  img.classList.add("selected");
-  selected.push(img);
-
-  if (selected.length >= 1) {
-    resetBtn.style.display = "inline";
-  }
-
-  if (selected.length === 2) {
-    verifyBtn.style.display = "inline";
-  }
-}
-
-// Reset
-resetBtn.addEventListener("click", () => {
-  selected.forEach(img => img.classList.remove("selected"));
-  selected = [];
-  resetBtn.style.display = "none";
-  verifyBtn.style.display = "none";
-  message.innerText = "";
-  heading.innerText =
-    "Please click on the identical tiles to verify that you are not a robot.";
-});
-
-// Verify
-verifyBtn.addEventListener("click", () => {
-  if (selected[0].dataset.class === selected[1].dataset.class) {
-    message.innerText = "You are a human. Congratulations!";
-  } else {
-    message.innerText =
-      "We can't verify you as a human. You selected the non-identical tiles.";
-  }
-  verifyBtn.style.display = "none";
-});
-
-window.onload = generateImages;
-
-	</script>
+    <main>
+      <h3 id="h">Please click on the identical tiles to verify that you are not a robot.</h3>
+      <div class="flex" id="imageContainer"></div>
+      <div style="text-align:center;">
+        <button id="reset" style="display:none;">Reset</button>
+        <button id="verify" style="display:none;">Verify</button>
+      </div>
+      <p id="para"></p>
+    </main>
+    <script src="script.js"></script>
   </body>
 </html>
